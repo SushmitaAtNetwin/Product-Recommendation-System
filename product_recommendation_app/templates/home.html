@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* styling navlist */
+        #navlist {
+            background-color: #0074D9;
+            position: absolute;
+            width: 100%;
+        }
+
+        /* styling navlist anchor element */
+        #navlist a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+
+        .navlist-right {
+            float: right;
+        }
+
+        /* hover effect of navlist anchor element */
+        #navlist a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* styling search bar */
+        .search input[type=text] {
+            width: 500px;
+            height: 25px;
+            border-radius: 25px;
+            border: none;
+        }
+
+        .search {
+            float: left;
+            margin: 15px;
+        }
+
+        .button {
+
+            color: #0c0404;
+            float: center;
+            padding: 10px 10px;
+            height: 10x;
+            width: 25px;
+
+            margin-right: 16px;
+            font-size: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button1 {
+
+        color: #0c0404;
+        float: center;
+        padding: 10px 10px;
+        height: 10x;
+        width: 25px;
+        left: 200px;
+        margin-right: 16px;
+        font-size: 12px;
+        border: none;
+        cursor: pointer;
+        }
+
+
+
+
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        /* Float four columns side by side */
+        .column {
+            float: left;
+            width: 25%;
+            padding: 0 10px;
+        }
+
+        /* Remove extra left and right margins, due to padding */
+        .row {
+            margin: 0 -5px;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive columns */
+        @media screen and (max-width: 600px) {
+            .column {
+                width: 100%;
+                display: block;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Style the counter cards */
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            padding: 16px;
+            text-align: center;
+
+            background-color: #f1f1f1;
+
+
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+            background-size: cover;
+            width: 300px;
+            height: 400px;
+
+
+        }
+
+        .py-container {
+            width: 100%;
+            height: 385px;
+            overflow: auto;
+        }
+
+        .py-content {
+            display: flex;
+        }
+
+        .py-item {
+            min-width: 325px;
+        }
+    </style>
+</head>
+
+<body>
+
+  
+
+    <div id="navlist">
+
+        <!-- search bar right align -->
+        <div class="search">
+            <form action="{% url 'get_val' %}">
+                <input type="text" placeholder=" Search" name="q">
+                <button>
+                    <b class="button" style="font-size: 12px;">
+                        Search
+                    </b>
+                </button>
+            </form>
+        
+        </div>
+       
+            <form action="{% url 'loginform' %}"> 
+                <button>
+                    <b class="button1" style="font-size: 12px;">
+                        login
+                    </b>
+                </button>
+            </form>
+     
+    </div>
+
+    
+
+
+    <br><br><br><br><br><br><br><br>
+
+
+    <div class="py-container">
+        <div class="py-content">
+            {% for i in d %}
+
+
+            <div onclick="NavigateToDetails(event)"class="column">
+                <div  class="card">
+                 
+                  
+
+                    <img src={{i.IMAGE}} height="100px" width="100px">
+                    <p>{{i.Product_Type}}</p>
+                    <p>Price ${{i.PRICE}}</p>
+                    <p>{{i.Description}}</p>
+                    <!-- <button onclick="readMore(this)">Show More</button> -->
+                </div>
+            </div>
+
+
+            {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <!-- <script type="text/javascript" src="script.js"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+    </div>
+    <!-- </a> -->
+
+</body>
+
+
+
+<script type="text/javascript">
+
+    let noOfChar = 50;
+    let contents = document.querySelectorAll(".content");
+    contents.forEach(content => {
+
+        if (content.textContent.length < noOfChar) {
+            content.nextElementSibling.style.display = "none";
+        }
+        else {
+            let displayText = content.textContent.slice
+                (0, noOfChar);
+            let moreText = content.textContent.slice
+                (noOfChar);
+            console.log(displayText)
+            content.innerHTML = '${displayText}<span class=".dots">...</span><span class="hide more">${moreText}</span>'
+        }
+    })
+
+    function readMore(btn) {
+
+
+        let post = btn.parentElement;
+        post.querySelector(".dots").classList.toggle
+            ("hide");
+        post.querySelector(".more").classList.toggle("hide");
+
+        btn.textContent == "Read More" ? btn.textContent = " Read Less" : btn.textContent = " Read More";
+    }
+
+    function NavigateToDetails(event) {
+
+        var product_name = (event.target).innerHTML;
+        
+
+        var x=document.getElementById("img").innerText;
+        console.log(x)
+        console.log(product_name)
+        
+        // const request = new XMLHttpRequest()
+        // request.open('POST','ProcessProduct/(product_name)}')
+        // request.send();
+
+    //     $.ajax({
+    //     url: "request_access/",
+    //     // type: 'POST',
+    //     data : { product_name: product_name},
+    //     success : function(json) {
+    //         $("#request-access").hide();
+    //         console.log("requested access complete");
+    //     }
+    // })
+
+
+
+    }
+
+    // $(document).ready(function () {
+    //     $(".column").on("click", function () {
+    //         alert('Hello');
+    //         // var id = $(this).attr('id').split('-')[1]; // gives you the id
+    //         // $.get("/test/" + id + "/", function (data) {
+    //         //     if (data.fact_type == "T") {
+    //         //         item = data.fact_note;
+    //         //     }
+    //         //     $('#result-' + id).html(item);
+    //         // });
+    //     });
+    // });
+
+</script>
+
+
+</html>
